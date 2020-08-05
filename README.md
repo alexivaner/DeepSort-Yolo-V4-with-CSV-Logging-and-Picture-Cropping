@@ -13,7 +13,7 @@ conda create --name <env> --file requirements.txt
 ```
 
 
-<strong>Go to tensorflow2.0-> deep-sort-yolov4</strong>
+Go to tensorflow2.0-> deep-sort-yolov4
 ```
 cd tensorflow2.0/deep-sort-yolov4/
 ```
