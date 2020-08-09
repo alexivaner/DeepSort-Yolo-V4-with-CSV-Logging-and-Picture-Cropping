@@ -73,17 +73,15 @@ Line 44 of demo.py or demo_csv.py or demo_csv_crop.py
 44|    file_path = 'IMG_3326.MOV'
 ```
 
-
+Make sure you already run convert.py before:
+```
+python convert.py
+```
 ## How to Visualize Tracking and have video output
 After you <strong>Go to tensorflow2.0-> deep-sort-yolov4</strong>, :
 
 
-I already put pretrained yolov4.weight, you just need to type
-accordingly and run:
-```
-python convert.py
-```
-Then run demo.py:
+I already put pretrained yolov4.weight, you just need to type this code after doing convert:
 ```
 python demo.py
 ```
@@ -91,11 +89,8 @@ You will get visualization of your video tracking in .avi format in "deep-sort-y
 ![Result_Video](https://github.com/alexivaner/DeepSort-Yolo-V4-with-CSV-Logging-and-Picture-Cropping/blob/master/result_github/yolo%20v4.gif)
 
 ## How to Visualize Tracking and Output CSV Tracking Files
-Make sure you already run convert.py before:
-```
-python convert.py
-```
-Then run demo.py:
+
+Run demo_csv.py:
 ```
 python demo_csv.py
 ```
@@ -106,11 +101,7 @@ You will get CSV files "result_tracking.csv" something like this:
 
 
 ## How to Output CSV Files and Get the Cropped Tracking Result
-Make sure you already run convert.py before:
-```
-python convert.py
-```
-Then run demo.py:
+Run demo_csv_crop.py:
 ```
 python demo_csv_crop.py
 ```
