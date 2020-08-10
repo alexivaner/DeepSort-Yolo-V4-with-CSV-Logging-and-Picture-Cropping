@@ -104,7 +104,9 @@ def main(yolo):
                 bbox = track.to_tlbr()
 
                 #Ini buat cropping gambar per frame
-                cropped_image = frame[int(bbox[1]):int(bbox[1])+(int(bbox[3])-int(bbox[1])),int(bbox[0]):int(bbox[0])+(int(bbox[2])-int(bbox[0]))]
+                
+                #cropped_image = frame[int(bbox[1]):int(bbox[1])+(int(bbox[3])-int(bbox[1])),int(bbox[0]):int(bbox[0])+(int(bbox[2])-int(bbox[0]))]
+                cropped_image = frame[int(bbox[1]):int(bbox[1])+256,int(bbox[0]):int(bbox[0])+128]
                 # cropped_image = frame[2:5,6:10]
 
                 # Matiin atau comment biar ga ada box putih
