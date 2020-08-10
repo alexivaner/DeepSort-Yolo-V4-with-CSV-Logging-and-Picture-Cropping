@@ -44,6 +44,8 @@ def main(yolo):
 
     file_path = 'IMG_3326.MOV'
     dfObj = pd.DataFrame(columns = ['frame_num' , 'track', 'cx' , 'cy','w','h','track_temp'])
+    dfObjDTP = pd.DataFrame(columns = ['filename' , 'frame_num' , 'bb1', 'bb2' , 'bb3','bb4','track','track_temp','Height'])
+
 
     if asyncVideo_flag :
         video_capture = VideoCaptureAsync(file_path)
@@ -104,7 +106,7 @@ def main(yolo):
                 bbox = track.to_tlbr()
 
                 #Ini buat cropping gambar per frame
-                
+
                 #cropped_image = frame[int(bbox[1]):int(bbox[1])+(int(bbox[3])-int(bbox[1])),int(bbox[0]):int(bbox[0])+(int(bbox[2])-int(bbox[0]))]
                 cropped_image = frame[int(bbox[1]):int(bbox[1])+256,int(bbox[0]):int(bbox[0])+128]
                 # cropped_image = frame[2:5,6:10]
@@ -134,6 +136,13 @@ def main(yolo):
                                               int(bbox[2])-int(bbox[0]),
                                               int(bbox[3])-int(bbox[1]),
                                               track.time_since_update], index=dfObj.columns ), ignore_index=True)
+
+                dfObjDTP=dfObjDTP.append(pd.Series([file_path,frame_index,int(bbox[0]),
+                                                    int(bbox[1]),int(bbox[2]),int(bbox[3]),
+                                                    track.track_id,track.time_since_update,
+                                                    int(bbox[3])-int(bbox[1])],
+                                                    index=dfObjDTP.columns ), ignore_index=True)
+
 
 
         for det in detections:
@@ -178,11 +187,15 @@ def main(yolo):
 
     dfObj =  dfObj.sort_values(["track", "frame_num"], ascending = (True, True))
     dfObj.to_csv(r'result_temp.csv', index = False)
+    dfObjDTP =  dfObjDTP.sort_values(["track", "frame_num"], ascending = (True, True))
+    dfObjDTP.to_csv(r'result_temp_dtp.csv', index = False)
     convert_to_final()
     cv2.destroyAllWindows()
 
 def convert_to_final():
     data = pd.read_csv("result_temp.csv")
+    data_dtp = pd.read_csv("result_temp_dtp.csv")
+
     data['diff'] = data['track'].diff()
     # Yields a tuple of index label and series for each row in the dataframe
     a=0
@@ -210,6 +223,10 @@ def convert_to_final():
     data.insert(6, "track_length",list_of_data)
     del data['diff']
     del data['track_temp']
+    data_dtp.insert(7, "detection_length",list_of_data)
+    del data_dtp['track_temp']
+
+
 
 
     #Labeled dan Requires_Features masih ga tau dibuat apa jadi disesuaikan dengan yg asli di nol kan semua
@@ -217,7 +234,7 @@ def convert_to_final():
     data.insert(8, "requires_features",0)
 
     data.to_csv(r'result_tracking.csv', index = False)
-
+    data_dtp.to_csv(r'result_tracking_dtp.csv', index = False)
 
 if __name__ == '__main__':
     main(YOLO())
